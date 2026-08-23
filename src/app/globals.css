@@ -1,26 +1,165 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Design System — Source of Truth: docs/02-design-system.md
+   ============================================================ */
+
+/* --- Dark Mode (default) --- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-primary: #0A0E14;
+  --bg-secondary: #111722;
+  --bg-tertiary: #1A2230;
+  --border: #232B3A;
+  --text-primary: #E6EAF2;
+  --text-secondary: #8A94A6;
+  --text-muted: #5C6577;
+  --accent: #2DD4BF;
+  --accent-hover: #5EEAD4;
+  --accent-muted: #134E4A;
+  --success: #4ADE80;
+  --warning: #FBBF24;
+
+  /* Category Colors (project filter tags) */
+  --cat-mobile: #A78BFA;
+  --cat-web: #60A5FA;
+  --cat-ml: #2DD4BF;
+  --cat-iot: #FB923C;
+
+  /* Typography Scale (mobile-first, rem) */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.75rem;
+  --text-4xl: 4rem;
+
+  /* Spacing & Layout */
+  --max-width: 1200px;
+  --px-mobile: 1.5rem;
+  --px-desktop: 2rem;
+  --section-gap-mobile: 5rem;
+  --section-gap-desktop: 8rem;
+
+  /* Border Radius */
+  --radius-card: 12px;
+  --radius-button: 8px;
+  --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-card: 0 0 0 1px var(--border);
+  --shadow-card-hover: 0 0 0 1px var(--accent), 0 8px 24px rgba(45, 212, 191, 0.15);
+
+  /* Navbar height */
+  --navbar-height: 4rem;
 }
 
+/* --- Light Mode (toggle) --- */
+.light,
+[data-theme="light"] {
+  --bg-primary: #FAFBFC;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #F0F2F5;
+  --border: #E2E5EA;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --accent: #0D9488;
+  --accent-hover: #0F766E;
+  --accent-muted: #CCFBF1;
+  --shadow-card: 0 0 0 1px var(--border);
+  --shadow-card-hover: 0 0 0 1px var(--accent), 0 8px 24px rgba(13, 148, 136, 0.1);
+}
+
+/* ============================================================
+   Tailwind v4 Theme — Maps CSS vars to Tailwind utilities
+   ============================================================ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Colors */
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-tertiary: var(--bg-tertiary);
+  --color-border: var(--border);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-muted: var(--accent-muted);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-cat-mobile: var(--cat-mobile);
+  --color-cat-web: var(--cat-web);
+  --color-cat-ml: var(--cat-ml);
+  --color-cat-iot: var(--cat-iot);
+
+  /* Fonts — next/font sets --font-heading, --font-body, --font-mono
+     as inline CSS variables on <html>. We must register them here
+     so Tailwind generates font-heading, font-body, font-mono utilities.
+     The var() references resolve at runtime to the next/font values. */
+  --font-heading: var(--font-heading, "Space Grotesk", "Sora", sans-serif);
+  --font-body: var(--font-body, "Inter", sans-serif);
+  --font-mono: var(--font-mono, "JetBrains Mono", "Fira Code", monospace);
+
+  /* Typography Scale — registered as --font-size-* so Tailwind
+     generates text-xs through text-4xl as font-size utilities.
+     Values from 02-design-system.md */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-3xl: 2.75rem;
+  --font-size-4xl: 4rem;
+
+  /* Spacing */
+  --spacing-section-mobile: var(--section-gap-mobile);
+  --spacing-section-desktop: var(--section-gap-desktop);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================================
+   Base Styles
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--navbar-height);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--accent-muted);
+  color: var(--accent);
+}
+
+/* Scrollbar (Webkit) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-pill);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
