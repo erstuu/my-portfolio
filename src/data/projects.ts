@@ -162,7 +162,7 @@ export const projects: Project[] = [
     name: "lembah-purba-expedition-tour-guide-booking",
     category: "Web",
     description: "Booking Private Tour guide to Lembah Purba Expedition",
-    techTags: ["PHP", "Laravel"],
+    techTags: ["Typescript", "Next.js"],
     repos: [{ label: "View Code", name: "lembah-purba-expedition-tour-guide-booking" }],
   },
   {
