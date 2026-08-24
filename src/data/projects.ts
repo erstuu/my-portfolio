@@ -159,6 +159,13 @@ export const projects: Project[] = [
     ],
   },
   {
+    name: "lembah-purba-expedition-tour-guide-booking",
+    category: "Web",
+    description: "Booking Private Tour guide to Lembah Purba Expedition",
+    techTags: ["PHP", "Laravel"],
+    repos: [{ label: "View Code", name: "lembah-purba-expedition-tour-guide-booking" }],
+  },
+  {
     name: "Mejeng",
     category: "Web",
     description: "Web app Laravel (UTS MPPL)",
