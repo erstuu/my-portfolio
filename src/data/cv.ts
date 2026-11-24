@@ -189,7 +189,7 @@ export const experienceGroups = [
 export const education = {
   school: "Universitas Muhammadiyah Sukabumi",
   location: "Sukabumi, West Java",
-  degree: "Bachelor of Engineering in Informatics Engineering",
+  degree: "Bachelor of Computer Science in Informatics Engineering",
   gpa: "3.88 / 4.00",
   period: "Oct 2022 – Jun 2026",
   graduationStatus: "Graduate",
