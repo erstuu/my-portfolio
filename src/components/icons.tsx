@@ -3,6 +3,7 @@ interface IconProps {
   className?: string;
 }
 
+// GitHub mark, inlined so it picks up the surrounding text color.
 export function GithubIcon({ size = 18, className }: IconProps) {
   return (
     <svg
@@ -18,6 +19,7 @@ export function GithubIcon({ size = 18, className }: IconProps) {
   );
 }
 
+// LinkedIn mark, inlined so it picks up the surrounding text color.
 export function LinkedinIcon({ size = 18, className }: IconProps) {
   return (
     <svg
