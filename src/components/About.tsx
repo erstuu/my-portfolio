@@ -1,155 +1,112 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { GraduationCap, Code2, Cpu, BrainCircuit, Rocket } from "lucide-react";
+import { useRef, useSyncExternalStore } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import type { MotionValue } from "framer-motion";
+import { aboutStatement, quickFacts } from "@/data/cv";
+import { reveal, stagger } from "@/lib/motion";
 
-const sectionVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
+const WORDS = aboutStatement.split(" ");
 
-const childVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
-  },
-};
+const subscribeNoop = () => () => {};
 
-/* Quick Facts data */
-const QUICK_FACTS = [
-  {
-    icon: GraduationCap,
-    label: "Status",
-    value: "Informatics Engineering Student",
-  },
-  {
-    icon: Code2,
-    label: "Focus",
-    value: "Full-Stack & Mobile Development",
-  },
-  {
-    icon: BrainCircuit,
-    label: "Research Interest",
-    value: "Machine Learning & NLP",
-  },
-  {
-    icon: Cpu,
-    label: "Exploration",
-    value: "IoT & Embedded Systems",
-  },
-  {
-    icon: Rocket,
-    label: "Current",
-    value: "CRISP-DM & Sentiment Analysis",
-  },
-];
+// False during SSR and the hydration render, true afterwards — lets us skip
+// reduced-motion styling on first paint without a hydration mismatch.
+const useMounted = () =>
+  useSyncExternalStore(
+    subscribeNoop,
+    () => true,
+    () => false
+  );
 
-/* Component */
+// A single word of the statement. Its opacity follows the scroll progress
+// through the paragraph, unless the visitor asked for reduced motion.
+function Word({
+  children,
+  progress,
+  range,
+  reduced,
+}: {
+  children: string;
+  progress: MotionValue<number>;
+  range: [number, number];
+  reduced: boolean;
+}) {
+  const opacity = useTransform(progress, range, [0.25, 1]);
+  return (
+    <motion.span style={reduced ? undefined : { opacity }} className="text-ink">
+      {children}
+      {" "}
+    </motion.span>
+  );
+}
+
+// Large statement that lights up word by word as you scroll, with three
+// quick facts underneath.
 export default function About() {
+  const reduceMotion = useReducedMotion();
+  const mounted = useMounted();
+  const reduced = mounted && reduceMotion === true;
+  const ref = useRef<HTMLParagraphElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 0.85", "end 0.45"],
+  });
+
   return (
     <section
       id="about"
-      className="relative py-[var(--section-gap-mobile)] md:py-[var(--section-gap-desktop)]"
+      className="py-[var(--section-gap-mobile)] md:py-[var(--section-gap-desktop)]"
     >
       <motion.div
-        className="mx-auto max-w-[var(--max-width)] px-[var(--px-mobile)] md:px-[var(--px-desktop)]"
-        variants={sectionVariants}
+        variants={stagger}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
+        whileInView="show"
+        viewport={{ once: true, margin: "-10%" }}
+        className="mx-auto max-w-[var(--max-width-grid)] px-[var(--px-mobile)] md:px-[var(--px-desktop)]"
       >
-        {/* Section header */}
-        <motion.div variants={childVariants} className="mb-12">
-          <span className="mb-2 block font-mono text-sm text-accent">
-            // about me
-          </span>
-          <h2 className="font-heading text-xl font-bold text-text-primary md:text-2xl">
-            Get to Know Me
-          </h2>
-          <div className="mt-3 h-1 w-12 rounded-full bg-accent" />
+        <h2 className="sr-only">About</h2>
+
+        <motion.p
+          ref={ref}
+          variants={reveal}
+          className="max-w-[var(--max-width-copy)] text-title-2 font-semibold"
+        >
+          {WORDS.map((word, index) => (
+            <Word
+              key={`${word}-${index}`}
+              progress={scrollYProgress}
+              range={[index / WORDS.length, (index + 1) / WORDS.length]}
+              reduced={reduced}
+            >
+              {word}
+            </Word>
+          ))}
+        </motion.p>
+
+        <motion.div
+          variants={reveal}
+          className="mt-16 grid gap-4 md:mt-24 md:grid-cols-3"
+        >
+          {quickFacts.map((fact) => (
+            <div
+              key={fact.label}
+              className="rounded-[var(--radius-tile)] bg-bg-secondary p-6 md:p-8"
+            >
+              <p className="text-caption uppercase tracking-wide text-ink-muted">
+                {fact.label}
+              </p>
+              <p className="mt-2 text-headline font-semibold text-ink">
+                {fact.value}
+              </p>
+            </div>
+          ))}
         </motion.div>
-
-        {/* 2-column layout */}
-        <div className="grid gap-10 lg:grid-cols-5 lg:gap-16">
-          {/* Bio (left, wider) */}
-          <motion.div
-            variants={childVariants}
-            className="lg:col-span-3 space-y-5"
-          >
-            <p className="text-base leading-relaxed text-text-secondary md:text-lg">
-              Hi! I&apos;m <span className="font-semibold text-text-primary">Restu Gede Purnama</span>,
-              an Informatics Engineering student with a deep passion for building
-              software that solves real problems. My journey spans across
-              multiple domains — from crafting polished Android apps with Kotlin
-              to building full-stack web platforms using Next.js and Laravel.
-            </p>
-
-            <p className="text-base leading-relaxed text-text-secondary md:text-lg">
-              Beyond application development, I&apos;ve ventured into{" "}
-              <span className="text-accent">machine learning</span> — working on
-              projects like sentiment analysis with LSTM/Word2Vec, rainfall
-              prediction with Random Forest, and forex movement prediction. I
-              follow the CRISP-DM methodology and enjoy every step from data
-              exploration to model deployment.
-            </p>
-
-            <p className="text-base leading-relaxed text-text-secondary md:text-lg">
-              I also have hands-on experience with{" "}
-              <span className="text-accent">embedded systems and IoT</span>,
-              having built Arduino-based projects that bridge the gap between
-              hardware and software. This cross-domain exposure fuels my goal to
-              become a versatile engineer who can tackle challenges from any
-              angle.
-            </p>
-          </motion.div>
-
-          {/* Quick Facts card (right) */}
-          <motion.div
-            variants={childVariants}
-            className="lg:col-span-2"
-          >
-            <div className="rounded-[var(--radius-card)] border border-border bg-bg-secondary p-6 shadow-[var(--shadow-card)] transition-shadow duration-300 hover:shadow-[var(--shadow-card-hover)]">
-              <h3 className="mb-5 font-heading text-sm font-semibold uppercase tracking-widest text-text-muted">
-                Quick Facts
-              </h3>
-
-              <ul className="space-y-4">
-                {QUICK_FACTS.map((fact) => (
-                  <li key={fact.label} className="flex items-start gap-3">
-                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-button)] bg-accent-muted text-accent">
-                      <fact.icon size={16} />
-                    </span>
-                    <div>
-                      <span className="block text-xs font-medium uppercase tracking-wider text-text-muted">
-                        {fact.label}
-                      </span>
-                      <span className="text-sm font-medium text-text-primary">
-                        {fact.value}
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Fun badge strip */}
-            <div className="mt-4 flex flex-wrap gap-2">
-              {["Kotlin", "TypeScript", "Python", "Laravel", "Next.js", "Arduino"].map(
-                (tech) => (
-                  <motion.span
-                    key={tech}
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    className="rounded-[var(--radius-pill)] border border-border bg-bg-tertiary px-3 py-1 font-mono text-xs text-text-secondary transition-colors duration-200 hover:border-accent hover:text-accent"
-                  >
-                    {tech}
-                  </motion.span>
-                )
-              )}
-            </div>
-          </motion.div>
-        </div>
       </motion.div>
     </section>
   );
