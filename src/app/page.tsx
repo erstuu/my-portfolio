@@ -1,24 +1,27 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import ImpactBand from "@/components/ImpactBand";
 import About from "@/components/About";
 import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
-import GitHubStats from "@/components/GitHubStats";
-import Timeline from "@/components/Timeline";
+import Experience from "@/components/Experience";
+import Education from "@/components/Education";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
+// The one-page homepage, sections in the order visitors read them.
 export default function Home() {
   return (
     <>
       <Navbar />
       <main>
         <Hero />
+        <ImpactBand />
         <About />
         <Skills />
         <Projects />
-        <GitHubStats />
-        <Timeline />
+        <Experience />
+        <Education />
         <Contact />
       </main>
       <Footer />
