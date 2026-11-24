@@ -1,183 +1,168 @@
-/**
- * Projects data — Source of Truth: docs/06-projects-data.md
- *
- * DO NOT duplicate project data elsewhere. All project information
- * lives in this file. If you need to add/edit/remove a project,
- * edit docs/06-projects-data.md first, then update this file.
- */
+export type Category = "Mobile" | "Web" | "AI/ML" | "Other";
 
-export type ProjectCategory = "Mobile" | "Web" | "ML" | "IoT";
-
-export interface Project {
-  name: string;
-  category: ProjectCategory;
-  description: string;
-  techTags: string[];
-  repos: { label: string; name: string }[];
+export interface ProjectMetric {
+  value: string;
+  label: string;
 }
 
-/**
- * Category → Tailwind color class mapping.
- * Colors from 02-design-system.md § Category Colors.
- */
-export const CATEGORY_META: Record<
-  ProjectCategory,
-  { label: string; colorClass: string; bgClass: string }
-> = {
-  Mobile: {
-    label: "Mobile",
-    colorClass: "text-cat-mobile",
-    bgClass: "bg-cat-mobile/15",
-  },
-  Web: {
-    label: "Web",
-    colorClass: "text-cat-web",
-    bgClass: "bg-cat-web/15",
-  },
-  ML: {
-    label: "ML / Data",
-    colorClass: "text-cat-ml",
-    bgClass: "bg-cat-ml/15",
-  },
-  IoT: {
-    label: "IoT / Embedded",
-    colorClass: "text-cat-iot",
-    bgClass: "bg-cat-iot/15",
-  },
-};
+export interface Project {
+  id: string;
+  name: string;
+  category: Category;
+  period: string;
+  role: string;
+  headline: string;
+  metric?: ProjectMetric;
+  highlights: string[];
+  stack: string[];
+  repos: string[];
+  liveUrl?: string;
+  image?: string;
+  featured: boolean;
+}
 
-/** All filter options — "All" + each category */
-export const FILTER_OPTIONS: Array<"All" | ProjectCategory> = [
-  "All",
-  "Mobile",
-  "Web",
-  "ML",
-  "IoT",
+export interface ArchiveProject {
+  id: string;
+  name: string;
+  category: Category;
+  description: string;
+  stack: string[];
+  repos: string[];
+}
+
+export const featuredProjects: Project[] = [
+  {
+    id: "villa-sentiment-analyzer",
+    name: "Villa Sentiment Analyzer",
+    category: "AI/ML",
+    period: "Nov 2025 – Jun 2026",
+    role: "Full-Stack Developer (web + AI analytics)",
+    headline:
+      "Turns a pile of villa reviews into a business dashboard — in seconds.",
+    metric: {
+      value: "1,000+",
+      label: "reviews classified in under 5 seconds",
+    },
+    highlights: [
+      "Developed and deployed a responsive React.js and TypeScript web app on Vercel, automating batch CSV review processing to classify 1,000+ customer reviews in under 5 seconds via a Python LSTM deep learning model.",
+      "Reduced manual sentiment analysis workload by ~85% through automated text preprocessing, tokenization, RESTful API integration, and an interactive Business Intelligence dashboard.",
+    ],
+    stack: [
+      "React.js",
+      "TypeScript",
+      "Python",
+      "LSTM",
+      "Word2Vec",
+      "REST API",
+      "Vercel",
+    ],
+    repos: [
+      "villa-review-sentiment-analysis-dashboard",
+      "Pipeline-Analisis-Sentiment-Pengunjung-Villa-LSTM-Word2Vec",
+    ],
+    image: "/projects/villa-sentiment-analyzer-dashboard.png",
+    featured: true,
+  },
+  {
+    id: "renangku",
+    name: "RenangKu",
+    category: "Web",
+    period: "Jun 2025 – Jul 2025",
+    role: "Full-Stack Developer",
+    headline: "Ticketing and daily operations, streamlined end to end.",
+    metric: {
+      value: "~60%",
+      label: "streamlined daily ticketing & operational workflows",
+    },
+    highlights: [
+      "Engineered an end-to-end web application using PHP (Laravel, Eloquent ORM), React.js (TypeScript), and PostgreSQL/MySQL, streamlining daily ticketing and operational workflows by ~60%.",
+      "Designed 10+ normalized relational database tables and secure RESTful APIs with role-based access control, delivering 100% of sprint milestones on schedule under Agile/Kanban workflows.",
+    ],
+    stack: [
+      "PHP",
+      "Laravel",
+      "Eloquent ORM",
+      "React.js",
+      "TypeScript",
+      "PostgreSQL",
+      "MySQL",
+    ],
+    repos: ["web-renangku"],
+    featured: true,
+  },
+  {
+    id: "dmcare-nurse",
+    name: "DMCare Nurse",
+    category: "Mobile",
+    period: "Feb 2025 – Mar 2025",
+    role: "Android Developer (native Kotlin)",
+    headline:
+      "Structured Type 2 diabetes self-monitoring, in a native Android app.",
+    metric: { value: "8 weeks", label: "delivered across 2 academic faculties" },
+    highlights: [
+      "Architected and delivered a native Kotlin Android application across 2 academic faculties within an 8-week timeline, integrating automated BMI calculation and blood glucose risk classification modules.",
+      "Achieved 100% functional completion across 4 core clinical assessment screens, enabling structured Type 2 diabetes self-monitoring and educational outreach.",
+    ],
+    stack: ["Kotlin", "Android SDK"],
+    repos: ["DM-Care"],
+    image: "/projects/DM Care Nurse.png",
+    featured: true,
+  },
+  {
+    id: "glucoguide",
+    name: "GlucoGuide",
+    category: "Mobile",
+    period: "Nov 2024 – Dec 2024",
+    role: "Android Developer, member of a 5-person cross-functional team",
+    headline: "Real-time diabetes risk prediction, backed by an ML API.",
+    metric: { value: "<2 s", label: "API inference response time" },
+    highlights: [
+      "Collaborated in a 5-member cross-functional team to build a Kotlin Android app (MVVM, Jetpack Compose, Firebase) integrating a Machine Learning REST API for real-time diabetes risk prediction.",
+      "Delivered 5+ core user flows (risk screening, glucose logging, health analytics) with <2-second API inference response time and zero critical crash defects during user testing.",
+    ],
+    stack: ["Kotlin", "Jetpack Compose", "MVVM", "Firebase", "REST API"],
+    repos: ["https://github.com/reiirei/Gluco-Guide"],
+    image: "/projects/Gluco Guide.png",
+    featured: true,
+  },
 ];
 
-/**
- * Project list — mapped 1:1 from docs/06-projects-data.md table.
- * Repo URLs generated as: https://github.com/erstuu/{repo}
- */
-export const projects: Project[] = [
+export const archiveProjects: ArchiveProject[] = [
   {
-    name: "DiaFit / DM-Care",
-    category: "Mobile",
+    id: "villa-lstm-pipeline",
+    name: "Villa Sentiment — LSTM Pipeline",
+    category: "AI/ML",
     description:
-      "Android app edukasi & pencegahan diabetes melitus",
-    techTags: ["Kotlin", "Android SDK"],
-    repos: [
-      { label: "DiaFit", name: "DiaFit" },
-      { label: "DM-Care", name: "DM-Care" },
-    ],
+      "Model deep learning LSTM + Word2Vec untuk klasifikasi sentimen ulasan villa",
+    stack: ["Python", "LSTM", "Word2Vec", "Jupyter"],
+    repos: ["Pipeline-Analisis-Sentiment-Pengunjung-Villa-LSTM-Word2Vec"],
   },
   {
-    name: "SFootball",
-    category: "Mobile",
-    description:
-      "Android app jadwal sepak bola",
-    techTags: ["Kotlin", "Android SDK", "REST API"],
-    repos: [
-      { label: "SFootball", name: "SFootball" },
-    ],
-  },
-  {
-    name: "Lalajo",
-    category: "Mobile",
-    description:
-      "Android app Movie Review",
-    techTags: ["Javascript", "React Native"],
-    repos: [
-      { label: "Lalajo", name: "Lalajo" },
-    ],
-  },
-  {
-    name: "Dicoding-Event",
-    category: "Mobile",
-    description:
-      "Dicoding Event Viewer App",
-    techTags: ["Kotlin", "Android SDK", "REST API", "Retrofit", "MVVM"],
-    repos: [
-      { label: "Dicoding-Event", name: "Dicoding-Event" },
-    ],
-  },
-  {
-    name: "Story App",
-    category: "Mobile",
-    description:
-      "People share stories through images",
-    techTags: ["Kotlin", "Android SDK", "REST API", "Retrofit", "MVVM"],
-    repos: [
-      { label: "Story-App", name: "Story-App" },
-    ],
-  },
-  {
-    name: "Rainfall Prediction",
-    category: "ML",
-    description:
-      "Prediksi curah hujan pakai Random Forest, dari notebook ke deployed app",
-    techTags: ["Python", "scikit-learn", "Jupyter"],
-    repos: [
-      { label: "Notebook", name: "prediksi-curah-hujan-random-forest" },
-      { label: "App", name: "rainfall-app" },
-    ],
-  },
-  {
-    name: "Villa Review Sentiment",
-    category: "ML",
-    description:
-      "Dashboard sentiment analysis review villa, pipeline LSTM/Word2Vec",
-    techTags: ["TypeScript", "Python", "LSTM"],
-    repos: [
-      { label: "Dashboard", name: "villa-review-sentiment-analysis-dashboard" },
-      {
-        label: "Pipeline",
-        name: "Pipeline-Analisis-Sentiment-Pengunjung-Villa-LSTM-Word2Vec",
-      },
-    ],
-  },
-  {
-    name: "Forex EUR/USD Prediction",
-    category: "ML",
-    description: "Prediksi pergerakan forex pair EUR/USD",
-    techTags: ["Python", "Jupyter"],
-    repos: [
-      {
-        label: "View Code",
-        name: "UAS-ML-Prediksi-Pergerakan-FOREX-Pair-EURUSD",
-      },
-    ],
-  },
-  {
-    name: "Alarm Pengingat Tidur",
-    category: "IoT",
-    description:
-      "Project mikrokontroler, alarm pengingat tidur berbasis Arduino",
-    techTags: ["C++", "Arduino"],
-    repos: [
-      { label: "View Code", name: "Alarm-Pengingat-Tidur-Arduino" },
-    ],
-  },
-  {
-    name: "lembah-purba-expedition-tour-guide-booking",
-    category: "Web",
-    description: "Booking Private Tour guide to Lembah Purba Expedition",
-    techTags: ["Typescript", "Next.js"],
-    repos: [{ label: "View Code", name: "lembah-purba-expedition-tour-guide-booking" }],
-  },
-  {
+    id: "mejeng",
     name: "Mejeng",
     category: "Web",
     description: "Web app Laravel (UTS MPPL)",
-    techTags: ["PHP", "Laravel"],
-    repos: [{ label: "View Code", name: "Mejeng-Laravel-App-v2" }],
+    stack: ["PHP", "Laravel"],
+    repos: ["Mejeng-Laravel-App-v2"],
   },
   {
-    name: "SwimEase",
-    category: "Web",
-    description:
-      "Aplikasi pendaftaran les renang berbasis Laravel",
-    techTags: ["PHP", "Laravel", "Blade"],
-    repos: [{ label: "View Code", name: "SwimEase" }],
+    id: "alarm-pengingat-tidur",
+    name: "Alarm Pengingat Tidur",
+    category: "Other",
+    description: "Alarm pengingat tidur berbasis Arduino",
+    stack: ["C++", "Arduino"],
+    repos: ["Alarm-Pengingat-Tidur-Arduino"],
   },
 ];
+
+// Turns a bare repo name into a GitHub URL; full URLs pass through untouched.
+export function repoUrl(repo: string): string {
+  return repo.startsWith("http")
+    ? repo
+    : `https://github.com/erstuu/${repo}`;
+}
+
+// Finds a featured project by id, for linking experience entries to the sheet.
+export function getProjectById(id: string): Project | undefined {
+  return featuredProjects.find((project) => project.id === id);
+}
