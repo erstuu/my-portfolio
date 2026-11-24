@@ -1,131 +1,133 @@
 @import "tailwindcss";
 
-/* ============================================================
-   Design System — Source of Truth: docs/02-design-system.md
-   ============================================================ */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-/* --- Dark Mode (default) --- */
 :root {
-  --bg-primary: #0A0E14;
-  --bg-secondary: #111722;
-  --bg-tertiary: #1A2230;
-  --border: #232B3A;
-  --text-primary: #E6EAF2;
-  --text-secondary: #8A94A6;
-  --text-muted: #5C6577;
-  --accent: #2DD4BF;
-  --accent-hover: #5EEAD4;
-  --accent-muted: #134E4A;
-  --success: #4ADE80;
-  --warning: #FBBF24;
+  --bg-primary: #fbfbfd;
+  --bg-secondary: #f5f5f7;
+  --surface: #ffffff;
 
-  /* Category Colors (project filter tags) */
-  --cat-mobile: #A78BFA;
-  --cat-web: #60A5FA;
-  --cat-ml: #2DD4BF;
-  --cat-iot: #FB923C;
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-muted: #86868b;
 
-  /* Typography Scale (mobile-first, rem) */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.5rem;
-  --text-2xl: 2rem;
-  --text-3xl: 2.75rem;
-  --text-4xl: 4rem;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --link: #0066cc;
+  --success: #34c759;
 
-  /* Spacing & Layout */
-  --max-width: 1200px;
-  --px-mobile: 1.5rem;
-  --px-desktop: 2rem;
-  --section-gap-mobile: 5rem;
-  --section-gap-desktop: 8rem;
+  --border: rgba(0, 0, 0, 0.08);
 
-  /* Border Radius */
-  --radius-card: 12px;
-  --radius-button: 8px;
+  --cat-mobile: #af52de;
+  --cat-web: #007aff;
+  --cat-ml: #30b0c7;
+  --cat-other: #86868b;
+
+  --radius-tile: 28px;
+  --radius-card: 18px;
   --radius-pill: 9999px;
 
-  /* Shadows */
-  --shadow-card: 0 0 0 1px var(--border);
-  --shadow-card-hover: 0 0 0 1px var(--accent), 0 8px 24px rgba(45, 212, 191, 0.15);
+  --max-width-copy: 980px;
+  --max-width-grid: 1200px;
+  --px-mobile: 1.25rem;
+  --px-desktop: 2rem;
+  --section-gap-mobile: 6rem;
+  --section-gap-desktop: 10rem;
+  --navbar-height: 48px;
 
-  /* Navbar height */
-  --navbar-height: 4rem;
+  --font-sans-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "SF Pro Text", var(--font-inter, "Inter"), "Helvetica Neue", Arial,
+    sans-serif;
+  --font-mono-stack: "SF Mono", ui-monospace, "SFMono-Regular", Menlo,
+    Consolas, monospace;
+
+  --fs-display: clamp(3rem, 1.5rem + 6vw, 6rem);
+  --fs-title-1: clamp(2rem, 1.25rem + 3vw, 3.5rem);
+  --fs-title-2: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
+  --fs-headline: clamp(1.1875rem, 1.05rem + 0.6vw, 1.75rem);
+  --fs-eyebrow: 1.0625rem;
+  --fs-body: 1.0625rem;
+  --fs-caption: 0.8125rem;
+  --fs-metric: clamp(3.5rem, 1.5rem + 7vw, 7.5rem);
 }
 
-/* --- Light Mode (toggle) --- */
-.light,
-[data-theme="light"] {
-  --bg-primary: #FAFBFC;
-  --bg-secondary: #FFFFFF;
-  --bg-tertiary: #F0F2F5;
-  --border: #E2E5EA;
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #94A3B8;
-  --accent: #0D9488;
-  --accent-hover: #0F766E;
-  --accent-muted: #CCFBF1;
-  --shadow-card: 0 0 0 1px var(--border);
-  --shadow-card-hover: 0 0 0 1px var(--accent), 0 8px 24px rgba(13, 148, 136, 0.1);
+:root {
+  --inverse-bg: #000000;
+  --inverse-text: #f5f5f7;
+  --inverse-text-secondary: #a1a1a6;
 }
 
-/* ============================================================
-   Tailwind v4 Theme — Maps CSS vars to Tailwind utilities
-   ============================================================ */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg-primary: #000000;
+  --bg-secondary: #1d1d1f;
+  --surface: #2c2c2e;
+
+  --text-primary: #f5f5f7;
+  --text-secondary: #a1a1a6;
+  --text-muted: #6e6e73;
+
+  --accent: #0a84ff;
+  --accent-hover: #409cff;
+  --link: #2997ff;
+  --success: #30d158;
+
+  --border: rgba(255, 255, 255, 0.12);
+}
+
 @theme inline {
-  /* Colors */
   --color-bg-primary: var(--bg-primary);
   --color-bg-secondary: var(--bg-secondary);
-  --color-bg-tertiary: var(--bg-tertiary);
-  --color-border: var(--border);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-muted: var(--text-muted);
+  --color-surface: var(--surface);
+
+  --color-ink: var(--text-primary);
+  --color-ink-secondary: var(--text-secondary);
+  --color-ink-muted: var(--text-muted);
+
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
-  --color-accent-muted: var(--accent-muted);
+  --color-link: var(--link);
   --color-success: var(--success);
-  --color-warning: var(--warning);
+
+  --color-hairline: var(--border);
+
+  --color-inverse-bg: var(--inverse-bg);
+  --color-inverse-text: var(--inverse-text);
+  --color-inverse-text-secondary: var(--inverse-text-secondary);
+
   --color-cat-mobile: var(--cat-mobile);
   --color-cat-web: var(--cat-web);
   --color-cat-ml: var(--cat-ml);
-  --color-cat-iot: var(--cat-iot);
+  --color-cat-other: var(--cat-other);
 
-  /* Fonts — next/font sets --font-heading, --font-body, --font-mono
-     as inline CSS variables on <html>. We must register them here
-     so Tailwind generates font-heading, font-body, font-mono utilities.
-     The var() references resolve at runtime to the next/font values. */
-  --font-heading: var(--font-heading, "Space Grotesk", "Sora", sans-serif);
-  --font-body: var(--font-body, "Inter", sans-serif);
-  --font-mono: var(--font-mono, "JetBrains Mono", "Fira Code", monospace);
+  --font-sans: var(--font-sans-stack);
+  --font-heading: var(--font-sans-stack);
+  --font-body: var(--font-sans-stack);
+  --font-mono: var(--font-mono-stack);
 
-  /* Typography Scale — registered as --font-size-* so Tailwind
-     generates text-xs through text-4xl as font-size utilities.
-     Values from 02-design-system.md */
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.5rem;
-  --font-size-2xl: 2rem;
-  --font-size-3xl: 2.75rem;
-  --font-size-4xl: 4rem;
-
-  /* Spacing */
-  --spacing-section-mobile: var(--section-gap-mobile);
-  --spacing-section-desktop: var(--section-gap-desktop);
-}
-
-/* ============================================================
-   Base Styles
-   ============================================================ */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+  --text-display: var(--fs-display);
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.03em;
+  --text-title-1: var(--fs-title-1);
+  --text-title-1--line-height: 1.1;
+  --text-title-1--letter-spacing: -0.02em;
+  --text-title-2: var(--fs-title-2);
+  --text-title-2--line-height: 1.15;
+  --text-title-2--letter-spacing: -0.015em;
+  --text-headline: var(--fs-headline);
+  --text-headline--line-height: 1.2;
+  --text-headline--letter-spacing: -0.01em;
+  --text-eyebrow: var(--fs-eyebrow);
+  --text-eyebrow--line-height: 1.2;
+  --text-body: var(--fs-body);
+  --text-body--line-height: 1.47;
+  --text-body--letter-spacing: -0.01em;
+  --text-caption: var(--fs-caption);
+  --text-caption--line-height: 1.4;
+  --text-metric: var(--fs-metric);
+  --text-metric--line-height: 1;
+  --text-metric--letter-spacing: -0.03em;
 }
 
 html {
@@ -136,30 +138,9 @@ html {
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: var(--font-body);
-  line-height: 1.6;
+  font-family: var(--font-sans-stack);
+  line-height: 1.47;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 300ms ease, color 300ms ease;
-}
-
-/* Selection */
-::selection {
-  background-color: var(--accent-muted);
-  color: var(--accent);
-}
-
-/* Scrollbar (Webkit) */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg-primary);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--bg-tertiary);
-  border-radius: var(--radius-pill);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
 }

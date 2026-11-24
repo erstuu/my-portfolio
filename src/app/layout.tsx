@@ -1,62 +1,83 @@
-import type { Metadata } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
+import { MotionConfig } from "framer-motion";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { profile, links } from "@/data/cv";
 import "./globals.css";
 
-/* ── Fonts (02-design-system.md § Typography) ────────────────────── */
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-heading",
-  subsets: ["latin"],
-  display: "swap",
-});
-
 const inter = Inter({
-  variable: "--font-body",
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
+const siteUrl = "https://erstuu-portfolio.vercel.app";
 
-/* ── SEO Metadata ────────────────────────────────────────────────── */
+const description = `${profile.headline} building end-to-end products — full-stack web, native Android, and applied AI. Portfolio of ${profile.name} (${profile.handle}).`;
+
 export const metadata: Metadata = {
-  title: "Restu Gede Purnama — Portfolio",
-  description:
-    "Personal developer portfolio of Restu Gede Purnama (erstuu). Informatics Engineering student, full-stack & mobile developer with exposure to ML and IoT.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: `${profile.name} — ${profile.headline}`,
+    template: `%s — ${profile.name}`,
+  },
+  description,
+  applicationName: `${profile.name} Portfolio`,
+  authors: [{ name: profile.name, url: links.github.href }],
+  creator: profile.name,
+  publisher: profile.name,
   keywords: [
-    "Restu Gede Purnama",
-    "erstuu",
+    profile.name,
+    profile.handle,
     "portfolio",
-    "developer",
-    "full-stack",
-    "mobile",
+    "software engineer",
+    "full-stack developer",
+    "React.js",
+    "TypeScript",
+    "Laravel",
+    "Android developer",
+    "Kotlin",
     "machine learning",
-    "IoT",
   ],
-  authors: [{ name: "Restu Gede Purnama" }],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "Restu Gede Purnama — Portfolio",
-    description:
-      "Full-stack & mobile developer. Informatics Engineering student with ML and IoT experience.",
     type: "website",
     locale: "en_US",
+    url: "/",
+    siteName: `${profile.name} — ${profile.headline}`,
+    title: `${profile.name} — ${profile.headline}`,
+    description,
+  },
+  twitter: {
+    card: "summary",
+    title: `${profile.name} — ${profile.headline}`,
+    description,
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
-/* ── Root Layout ─────────────────────────────────────────────────── */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FBFBFD" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+};
+
+// Shell for every page: fonts, theme provider, and motion defaults.
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <body className="min-h-screen antialiased">
-        <ThemeProvider>{children}</ThemeProvider>
+        <MotionConfig reducedMotion="user">
+          <ThemeProvider>{children}</ThemeProvider>
+        </MotionConfig>
       </body>
     </html>
   );
