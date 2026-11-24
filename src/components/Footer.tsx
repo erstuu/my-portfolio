@@ -1,48 +1,35 @@
-"use client";
+import { links, profile } from "@/data/cv";
 
-import { motion } from "framer-motion";
-import { GithubIcon, LinkedinIcon } from "@/components/icons";
-import { SOCIAL_LINKS, OWNER_NAME } from "@/data/socials";
-
-const FOOTER_SOCIALS = [
-  {
-    label: SOCIAL_LINKS.github.label,
-    href: SOCIAL_LINKS.github.href,
-    icon: <GithubIcon size={16} />,
-  },
-  {
-    label: SOCIAL_LINKS.linkedin.label,
-    href: SOCIAL_LINKS.linkedin.href,
-    icon: <LinkedinIcon size={16} />,
-  },
+const FOOTER_LINKS = [
+  { label: "GitHub", href: links.github.href },
+  { label: "LinkedIn", href: links.linkedin.href },
+  { label: "Email", href: links.email.href },
 ];
 
+// Copyright line and social links.
 export default function Footer() {
   return (
-    <footer className="border-t border-border bg-bg-secondary/50">
-      <div className="mx-auto flex max-w-[var(--max-width)] flex-col items-center gap-4 px-[var(--px-mobile)] py-8 text-center md:flex-row md:justify-between md:px-[var(--px-desktop)] md:text-left">
-        {/* Copyright */}
-        <p className="text-sm text-text-muted">
-          © {new Date().getFullYear()} {OWNER_NAME}
+    <footer className="border-t border-hairline">
+      <div className="mx-auto flex max-w-[var(--max-width-grid)] flex-col gap-4 px-[var(--px-mobile)] py-8 text-caption text-ink-muted md:flex-row md:items-center md:justify-between md:px-[var(--px-desktop)]">
+        <p>
+          © 2026 {profile.name}. Built with Next.js &amp; Tailwind CSS.
         </p>
 
-        {/* Social icons — same as Hero icon row */}
-        <div className="flex items-center gap-3">
-          {FOOTER_SOCIALS.map((social) => (
-            <motion.a
-              key={social.label}
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={social.label}
-              whileHover={{ scale: 1.1, y: -2, boxShadow: "0 0 8px rgba(45,212,191,0.2)" }}
-              whileTap={{ scale: 0.95 }}
-              className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-button)] border border-border text-text-muted transition-colors duration-200 hover:border-accent hover:text-accent"
+        <nav aria-label="Social" className="flex flex-wrap gap-x-5 gap-y-2">
+          {FOOTER_LINKS.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target={link.href.startsWith("http") ? "_blank" : undefined}
+              rel={
+                link.href.startsWith("http") ? "noopener noreferrer" : undefined
+              }
+              className="transition-colors duration-200 hover:text-ink"
             >
-              {social.icon}
-            </motion.a>
+              {link.label}
+            </a>
           ))}
-        </div>
+        </nav>
       </div>
     </footer>
   );
