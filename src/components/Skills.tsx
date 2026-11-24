@@ -1,128 +1,85 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Smartphone, Globe, BrainCircuit, Cpu } from "lucide-react";
-import type { ReactNode } from "react";
+import { Binary, CodeXml, Database, Wrench } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { skillGroups } from "@/data/cv";
+import { reveal, stagger } from "@/lib/motion";
 
-/* Scroll-reveal variants */
-const sectionVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
+const ICONS: Record<string, LucideIcon> = {
+  "Web & Mobile Development": CodeXml,
+  "Databases & Backend APIs": Database,
+  "Methodologies & Tools": Wrench,
+  "Data Structures & Algorithms": Binary,
 };
 
-const childVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
-  },
-};
-
-/* Skill categories */
-interface SkillCategory {
-  title: string;
-  icon: ReactNode;
-  colorClass: string;
-  bgClass: string;
-  borderClass: string;
-  techs: string[];
-}
-
-const SKILLS: SkillCategory[] = [
-  {
-    title: "Mobile Development",
-    icon: <Smartphone size={28} />,
-    colorClass: "text-cat-mobile",
-    bgClass: "bg-cat-mobile/10",
-    borderClass: "border-cat-mobile/20",
-    techs: ["Kotlin", "Android SDK", "Firebase"],
-  },
-  {
-    title: "Web Development",
-    icon: <Globe size={28} />,
-    colorClass: "text-cat-web",
-    bgClass: "bg-cat-web/10",
-    borderClass: "border-cat-web/20",
-    techs: ["PHP", "Laravel", "JavaScript", "TypeScript", "React"],
-  },
-  {
-    title: "Data Science / ML",
-    icon: <BrainCircuit size={28} />,
-    colorClass: "text-cat-ml",
-    bgClass: "bg-cat-ml/10",
-    borderClass: "border-cat-ml/20",
-    techs: ["Python", "Jupyter", "scikit-learn", "pandas"],
-  },
-  {
-    title: "Embedded Systems / IoT",
-    icon: <Cpu size={28} />,
-    colorClass: "text-cat-iot",
-    bgClass: "bg-cat-iot/10",
-    borderClass: "border-cat-iot/20",
-    techs: ["C++", "Arduino", "Mikrokontroler"],
-  },
-];
-
-/* Component */
+// Skill groups as cards, each with an icon matched by group title.
 export default function Skills() {
   return (
     <section
       id="skills"
-      className="relative py-[var(--section-gap-mobile)] md:py-[var(--section-gap-desktop)]"
+      className="bg-bg-secondary py-[var(--section-gap-mobile)] md:py-[var(--section-gap-desktop)]"
     >
       <motion.div
-        className="mx-auto max-w-[var(--max-width)] px-[var(--px-mobile)] md:px-[var(--px-desktop)]"
-        variants={sectionVariants}
+        variants={stagger}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
+        whileInView="show"
+        viewport={{ once: true, margin: "-10%" }}
+        className="mx-auto max-w-[var(--max-width-grid)] px-[var(--px-mobile)] md:px-[var(--px-desktop)]"
       >
-        {/* Section header */}
-        <motion.div variants={childVariants} className="mb-12">
-          <span className="mb-2 block font-mono text-sm text-accent">
-            // skills
-          </span>
-          <h2 className="font-heading text-xl font-bold text-text-primary md:text-2xl">
-            What I Work With
-          </h2>
-          <div className="mt-3 h-1 w-12 rounded-full bg-accent" />
-        </motion.div>
+        <motion.h2
+          variants={reveal}
+          className="max-w-[var(--max-width-copy)] text-title-1 font-semibold text-ink"
+        >
+          What I work with.
+        </motion.h2>
 
-        {/* 2×2 grid (stack on mobile) */}
-        <div className="grid gap-5 sm:grid-cols-2">
-          {SKILLS.map((skill) => (
-            <motion.div
-              key={skill.title}
-              variants={childVariants}
-              whileHover={{ y: -4, boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)" }}
-              className={`group rounded-[var(--radius-card)] border bg-bg-secondary p-6 shadow-[var(--shadow-card)] transition-colors duration-300 ${skill.borderClass}`}
-            >
-              {/* Icon */}
-              <div
-                className={`mb-4 flex h-12 w-12 items-center justify-center rounded-[var(--radius-button)] ${skill.bgClass} ${skill.colorClass}`}
+        <motion.p
+          variants={reveal}
+          className="mt-4 max-w-[var(--max-width-copy)] text-body text-ink-secondary"
+        >
+          Four groups, the stack I build with, the data underneath it, and the
+          habits that keep delivery on schedule.
+        </motion.p>
+
+        <div className="mt-16 grid gap-4 md:mt-24 md:grid-cols-2 md:gap-5">
+          {skillGroups.map((group) => {
+            const Icon = ICONS[group.title] ?? CodeXml;
+
+            return (
+              <motion.article
+                key={group.title}
+                variants={reveal}
+                className="rounded-[var(--radius-tile)] bg-surface p-6 md:p-8"
               >
-                {skill.icon}
-              </div>
+                <Icon
+                  size={28}
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                  className="text-ink-secondary"
+                />
 
-              {/* Title */}
-              <h3 className="mb-3 font-heading text-base font-semibold text-text-primary">
-                {skill.title}
-              </h3>
+                <h3 className="mt-6 text-headline font-semibold text-ink">
+                  {group.title}
+                </h3>
 
-              {/* Tech badges */}
-              <div className="flex flex-wrap gap-2">
-                {skill.techs.map((tech) => (
-                  <span
-                    key={tech}
-                    className={`rounded-[var(--radius-pill)] px-2.5 py-1 font-mono text-xs ${skill.bgClass} ${skill.colorClass} transition-opacity group-hover:opacity-100 opacity-80`}
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+                <p className="mt-2 text-body text-ink-secondary">
+                  {group.context}
+                </p>
+
+                <ul className="mt-6 flex flex-wrap gap-2">
+                  {group.items.map((item) => (
+                    <li
+                      key={item}
+                      className="rounded-full bg-bg-secondary px-3 py-1 text-sm text-ink-secondary"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </motion.article>
+            );
+          })}
         </div>
       </motion.div>
     </section>
