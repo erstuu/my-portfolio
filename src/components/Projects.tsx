@@ -83,7 +83,7 @@ export default function Projects() {
           variants={reveal}
           className="mt-4 max-w-[var(--max-width-copy)] text-body text-ink-secondary"
         >
-          Four shipped projects, each one measured, not just built.
+          Five shipped projects, each one measured, not just built.
         </motion.p>
 
         <motion.div

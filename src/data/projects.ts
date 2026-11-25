@@ -125,6 +125,26 @@ export const featuredProjects: Project[] = [
     image: "/projects/Gluco Guide.png",
     featured: true,
   },
+  {
+    id: "lalajo",
+    name: "Lalajo",
+    category: "Mobile",
+    period: "Jun 2024 – Jul 2024",
+    role: "Mobile Developer (React Native)",
+    headline: "Movie and TV discovery that stays smooth while you search.",
+    metric: {
+      value: "10+",
+      label: "screens on one cohesive dark-mode design system",
+    },
+    highlights: [
+      "Architected a scalable, modular React Native (Expo) codebase using Redux Toolkit (4 domain slices) and a decoupled service layer (Axios, AsyncStorage), isolating network and local-first watchlist persistence from UI components for zero-friction maintainability.",
+      "Engineered a cohesive dark-mode design system (theme.js design tokens, shared UI primitives, skeleton loaders, and infinite-scroll pagination) across 10+ screens, eliminating hardcoded styling while ensuring smooth perceived performance on variable network conditions.",
+    ],
+    stack: ["React Native", "Expo", "Redux Toolkit", "Axios", "AsyncStorage", "TMDb API"],
+    repos: ["lalajo"],
+    image: "/projects/Lalajo.png",
+    featured: true,
+  },
 ];
 
 export const archiveProjects: ArchiveProject[] = [
